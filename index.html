@@ -1,39 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My First CI/CD Project</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f4f8;
-            text-align: center;
-            padding: 50px;
-        }
+  <!-- 1. Essential Character Encoding & Viewport -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        h1 {
-            color: #2563eb;
-        }
+  <!-- 2. SEO & Page Metadata -->
+  <title>Site Name — Clear & Descriptive Page Title</title>
+  <meta name="description" content="A concise, 150-160 character summary of your page content for search engines.">
+  <meta name="author" content="Your Name or Brand">
+  <link rel="canonical" href="https://example.com">
 
-        p {
-            font-size: 20px;
-        }
+  <!-- 3. Open Graph / Social Media Previews -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Site Name — Page Title">
+  <meta property="og:description" content="Description shown when shared on social media.">
+  <meta property="og:image" content="https://example.comimages/preview.jpg">
+  <meta property="og:url" content="https://example.com">
 
-        button {
-            background-color: #2563eb;
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 5px;
-        }
-    </style>
+  <!-- 4. Favicons & Theme Color -->
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+  <!-- 5. Stylesheets -->
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <h1>Welcome to Our New Website!</h1>
-    <p>This is my first CI/CD project using Jenkins.</p>
-    <p>Developed using HTML and CSS.</p>
-    <button>Learn More</button>
-    <p>Jenkins CI/CD Practical Guide | HTML, VS Code, GitHub and Docker</p>
+  <!-- Accessibility Skip Link for Keyboard Users -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Site Header & Primary Navigation -->
+  <header>
+    <nav aria-label="Primary Navigation">
+      <a href="/" class="logo">BrandName</a>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Main Page Content -->
+  <main id="main-content">
+    <section id="hero">
+      <h1>Main Headline of Your Page</h1>
+      <p>A clear introductory sentence explaining what your site offers.</p>
+      <a href="#contact" class="btn">Get Started</a>
+    </section>
+
+    <section id="about">
+      <h2>About Us</h2>
+      <p>Provide key background details or value propositions here.</p>
+    </section>
+
+    <section id="services">
+      <h2>Our Services</h2>
+      <article>
+        <h3>Service One</h3>
+        <p>Short description of your first offering.</p>
+      </article>
+      <article>
+        <h3>Service Two</h3>
+        <p>Short description of your second offering.</p>
+      </article>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer id="contact">
+    <p>&copy; 2026 BrandName. All rights reserved.</p>
+  </footer>
+
+  <!-- 6. Deferred JavaScript (Loads after HTML parses) -->
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>
