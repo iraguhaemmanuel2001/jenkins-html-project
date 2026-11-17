@@ -4,8 +4,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>All-in-One File Converter</title>
 
-<title>Online File Converter</title>
+<!-- Conversion libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://unpkg.com/mammoth@1.8.0/mammoth.browser.min.js"></script>
+<script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
 
 <style>
 * {
@@ -15,82 +20,159 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: #f0f4f8;
+    background: #f1f5f9;
+    color: #263445;
 }
 
 header {
-    background: #1769aa;
+    background: #1557a0;
     color: white;
     text-align: center;
-    padding: 25px;
+    padding: 28px 15px;
 }
 
 header h1 {
     margin: 0;
+    font-size: 30px;
+}
+
+header p {
+    margin-bottom: 0;
 }
 
 .container {
-    width: 500px;
-    max-width: 90%;
-    margin: 50px auto;
+    max-width: 850px;
+    margin: 35px auto;
+    padding: 20px;
+}
+
+.converter {
     background: white;
     padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-radius: 14px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+h2 {
     text-align: center;
+    color: #1557a0;
+}
+
+.description {
+    text-align: center;
+    color: #777;
 }
 
 .upload-box {
-    border: 2px dashed #1769aa;
-    border-radius: 10px;
+    border: 2px dashed #1557a0;
+    background: #f5f9ff;
+    border-radius: 12px;
     padding: 35px 15px;
+    text-align: center;
     margin: 25px 0;
 }
 
 .upload-box h3 {
-    color: #1769aa;
+    color: #1557a0;
 }
 
-input[type="file"] {
+input[type=file] {
     max-width: 100%;
-    margin: 15px 0;
+    margin: 15px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-top: 20px;
 }
 
 select {
     width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
+    padding: 13px;
     margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    font-size: 15px;
+    background: white;
 }
 
 button {
     width: 100%;
-    background: #1769aa;
+    padding: 14px;
+    background: #1557a0;
     color: white;
     border: none;
-    padding: 14px;
-    border-radius: 6px;
-    margin-top: 20px;
-    cursor: pointer;
+    border-radius: 7px;
     font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 22px;
 }
 
 button:hover {
-    background: #0d4778;
+    background: #0c3c72;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: wait;
 }
 
 #message {
+    text-align: center;
     margin-top: 20px;
     font-weight: bold;
 }
 
+#fileName {
+    color: #555;
+    overflow-wrap: anywhere;
+}
+
+#results {
+    margin-top: 25px;
+}
+
+.result-link {
+    display: block;
+    padding: 13px;
+    margin: 10px 0;
+    background: #eaf4ff;
+    border-radius: 7px;
+    color: #1557a0;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+}
+
+.result-link:hover {
+    background: #d8eaff;
+}
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.feature {
+    background: #f5f9ff;
+    border-radius: 8px;
+    padding: 18px;
+    text-align: center;
+}
+
+.feature strong {
+    color: #1557a0;
+}
+
 footer {
     text-align: center;
+    padding: 20px;
     color: #777;
-    margin-top: 30px;
-    font-size: 13px;
 }
+
 </style>
 </head>
 
@@ -98,141 +180,486 @@ footer {
 
 <header>
     <h1>File Converter</h1>
-    <p>Convert your files quickly and easily</p>
+    <p>Convert your documents and images easily</p>
 </header>
 
 <div class="container">
 
-    <h2>Convert Your File</h2>
+<div class="converter">
 
-    <p>Select a file from your computer</p>
+    <h2>Online File Converter</h2>
+
+    <p class="description">
+        Upload your file, choose the format and download your converted file.
+    </p>
 
     <div class="upload-box">
 
-        <h3>Upload File</h3>
+        <h3>Choose Your File</h3>
 
-        <input type="file" id="fileInput"
-        accept=".jpg,.jpeg,.png,image/jpeg,image/png">
+        <p>Select a file from your computer</p>
+
+        <input type="file" id="fileInput">
 
         <p id="fileName">No file selected</p>
 
     </div>
 
-    <label><b>Convert To:</b></label>
+    <label>Choose Conversion Type</label>
 
-    <select id="format">
-        <option value="png">PNG</option>
-        <option value="jpg">JPG</option>
+    <select id="conversion">
+
+        <option value="pdf-word">PDF to Word</option>
+
+        <option value="word-pdf">Word to PDF</option>
+
+        <option value="jpg-png">JPG to PNG</option>
+
+        <option value="png-jpg">PNG to JPG</option>
+
+        <option value="pdf-jpg">PDF to JPG</option>
+
+        <option value="images-pdf">Images to PDF</option>
+
+        <option disabled>Excel to PDF (Coming Soon)</option>
+
+        <option disabled>PowerPoint to PDF (Coming Soon)</option>
+
     </select>
 
-    <button onclick="convertFile()">
+    <button id="convertBtn" onclick="convertFile()">
         Convert File
     </button>
 
     <p id="message"></p>
 
+    <div id="results"></div>
+
+</div>
+
+<div class="features">
+
+    <div class="feature">
+        <h2>📄</h2>
+        <strong>PDF Converter</strong>
+        <p>Convert PDF documents into Word and images.</p>
+    </div>
+
+    <div class="feature">
+        <h2>📝</h2>
+        <strong>Word Converter</strong>
+        <p>Convert Word documents into PDF.</p>
+    </div>
+
+    <div class="feature">
+        <h2>🖼️</h2>
+        <strong>Image Converter</strong>
+        <p>Convert JPG and PNG images.</p>
+    </div>
+
+</div>
+
 </div>
 
 <footer>
-    <p>Online File Converter | Simple and Easy</p>
+    <p>All-in-One File Converter © 2026</p>
 </footer>
 
 <script>
 
+// PDF.js configuration
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
 const fileInput = document.getElementById("fileInput");
+const conversion = document.getElementById("conversion");
+const message = document.getElementById("message");
+const results = document.getElementById("results");
+const convertBtn = document.getElementById("convertBtn");
+
+const formats = {
+    "pdf-word": ".pdf",
+    "word-pdf": ".docx",
+    "jpg-png": ".jpg,.jpeg",
+    "png-jpg": ".png",
+    "pdf-jpg": ".pdf",
+    "images-pdf": "image/*"
+};
+
+// Update accepted file type
+function updateFileType() {
+    fileInput.accept = formats[conversion.value];
+    fileInput.multiple = conversion.value === "images-pdf";
+    fileInput.value = "";
+    document.getElementById("fileName").textContent =
+        "No file selected";
+}
+
+conversion.addEventListener("change", updateFileType);
 
 fileInput.addEventListener("change", function() {
 
+    const files = Array.from(this.files);
+
     document.getElementById("fileName").textContent =
-        this.files.length
-        ? this.files[0].name
+        files.length
+        ? files.map(f => f.name).join(", ")
         : "No file selected";
 
 });
 
-function convertFile() {
+function showMessage(text, color = "green") {
+    message.style.color = color;
+    message.textContent = text;
+}
 
-    const file = fileInput.files[0];
-    const format = document.getElementById("format").value;
-    const message = document.getElementById("message");
+function downloadBlob(blob, filename) {
 
-    if (!file) {
-        alert("Please select a file first!");
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = filename;
+    link.className = "result-link";
+    link.textContent = "⬇ Download " + filename;
+
+    results.appendChild(link);
+
+    return link;
+}
+
+function getExtension(file) {
+    return file.name.split(".").pop().toLowerCase();
+}
+
+// Main conversion function
+async function convertFile() {
+
+    const files = Array.from(fileInput.files);
+    const type = conversion.value;
+
+    results.innerHTML = "";
+
+    if (!files.length) {
+        showMessage("Please select a file first!", "red");
         return;
     }
 
-    if (!["image/jpeg", "image/png"].includes(file.type)) {
-        message.style.color = "red";
-        message.textContent =
-            "Please upload a JPG or PNG image.";
+    const valid = {
+        "pdf-word": ["pdf"],
+        "word-pdf": ["docx"],
+        "jpg-png": ["jpg", "jpeg"],
+        "png-jpg": ["png"],
+        "pdf-jpg": ["pdf"],
+        "images-pdf": ["jpg", "jpeg", "png", "webp"]
+    };
+
+    if (files.some(file => !valid[type].includes(getExtension(file)))) {
+        showMessage("Please select a supported file format.", "red");
         return;
     }
+
+    if (type === "images-pdf" &&
+        files.some(file => !file.type.startsWith("image/"))) {
+        showMessage("Please select image files only.", "red");
+        return;
+    }
+
+    convertBtn.disabled = true;
+    convertBtn.textContent = "Converting...";
+
+    try {
+
+        if (type === "jpg-png" || type === "png-jpg") {
+            await imageConvert(files[0], type);
+        }
+
+        else if (type === "images-pdf") {
+            await imagesToPDF(files);
+        }
+
+        else if (type === "pdf-jpg") {
+            await pdfToImages(files[0]);
+        }
+
+        else if (type === "pdf-word") {
+            await pdfToWord(files[0]);
+        }
+
+        else if (type === "word-pdf") {
+            await wordToPDF(files[0]);
+        }
+
+        showMessage("Conversion completed successfully!");
+
+    } catch (error) {
+
+        console.error(error);
+
+        showMessage(
+            "Conversion failed: " + (error.message || "Please try another file."),
+            "red"
+        );
+
+    } finally {
+
+        convertBtn.disabled = false;
+        convertBtn.textContent = "Convert File";
+
+    }
+}
+
+// JPG TO PNG AND PNG TO JPG
+async function imageConvert(file, type) {
 
     const image = new Image();
-    const imageURL = URL.createObjectURL(file);
 
-    image.onload = function() {
+    const url = URL.createObjectURL(file);
+
+    try {
+
+        await new Promise((resolve, reject) => {
+            image.onload = resolve;
+            image.onerror = reject;
+            image.src = url;
+        });
 
         const canvas = document.createElement("canvas");
 
-        canvas.width = image.width;
-        canvas.height = image.height;
+        canvas.width = image.naturalWidth;
+        canvas.height = image.naturalHeight;
 
-        const context = canvas.getContext("2d");
+        const ctx = canvas.getContext("2d");
 
-        // Add white background when converting to JPG
-        if (format === "jpg") {
-            context.fillStyle = "white";
-            context.fillRect(0, 0, canvas.width, canvas.height);
+        if (type === "png-jpg") {
+            ctx.fillStyle = "white";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
         }
 
-        context.drawImage(image, 0, 0);
+        ctx.drawImage(image, 0, 0);
 
-        const mimeType =
-            format === "jpg" ? "image/jpeg" : "image/png";
+        const format = type === "jpg-png" ? "png" : "jpg";
 
-        canvas.toBlob(function(blob) {
+        const mime = format === "png" ?
+            "image/png" : "image/jpeg";
 
-            if (!blob) {
-                message.style.color = "red";
-                message.textContent = "Conversion failed!";
-                URL.revokeObjectURL(imageURL);
-                return;
+        const blob = await new Promise(resolve =>
+            canvas.toBlob(resolve, mime, 0.92)
+        );
+
+        if (!blob) throw new Error("Could not create image.");
+
+        downloadBlob(blob, "converted." + format);
+
+    } finally {
+        URL.revokeObjectURL(url);
+    }
+}
+
+// IMAGES TO PDF
+async function imagesToPDF(files) {
+
+    const { jsPDF } = window.jspdf;
+
+    const pdf = new jsPDF();
+
+    for (let i = 0; i < files.length; i++) {
+
+        const url = URL.createObjectURL(files[i]);
+        const image = new Image();
+
+        try {
+
+            await new Promise((resolve, reject) => {
+                image.onload = resolve;
+                image.onerror = reject;
+                image.src = url;
+            });
+
+            const width = image.naturalWidth;
+            const height = image.naturalHeight;
+
+            const orientation = width > height ? "landscape" : "portrait";
+
+            if (i > 0) {
+                pdf.addPage([width, height], orientation);
+            } else {
+                pdf.deletePage(1);
+                pdf.addPage([width, height], orientation);
             }
 
-            const downloadURL = URL.createObjectURL(blob);
+            pdf.addImage(
+                image,
+                "JPEG",
+                0,
+                0,
+                width,
+                height
+            );
 
-            const link = document.createElement("a");
+        } finally {
+            URL.revokeObjectURL(url);
+        }
+    }
 
-            link.href = downloadURL;
-            link.download = "converted." + format;
+    const blob = pdf.output("blob");
 
-            document.body.appendChild(link);
-            link.click();
-            link.remove();
+    downloadBlob(blob, "converted_images.pdf");
+}
 
-            URL.revokeObjectURL(downloadURL);
-            URL.revokeObjectURL(imageURL);
+// PDF TO JPG
+async function pdfToImages(file) {
 
-            message.style.color = "green";
-            message.textContent =
-                "Conversion successful! Your file has been downloaded.";
+    const data = await file.arrayBuffer();
 
-        }, mimeType, 0.92);
+    const pdf = await pdfjsLib.getDocument({
+        data: new Uint8Array(data)
+    }).promise;
 
-    };
+    for (let i = 1; i <= pdf.numPages; i++) {
 
-    image.onerror = function() {
+        const page = await pdf.getPage(i);
 
-        message.style.color = "red";
-        message.textContent = "Unable to read this image.";
+        const viewport = page.getViewport({ scale: 1.7 });
 
-        URL.revokeObjectURL(imageURL);
+        const canvas = document.createElement("canvas");
 
-    };
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
 
-    image.src = imageURL;
+        const ctx = canvas.getContext("2d");
 
+        await page.render({
+            canvasContext: ctx,
+            viewport: viewport
+        }).promise;
+
+        const blob = await new Promise(resolve =>
+            canvas.toBlob(resolve, "image/jpeg", 0.92)
+        );
+
+        if (!blob) throw new Error("Could not create JPG page.");
+
+        downloadBlob(blob, "page_" + i + ".jpg");
+
+    }
+}
+
+// PDF TO WORD
+async function pdfToWord(file) {
+
+    const data = await file.arrayBuffer();
+
+    const pdf = await pdfjsLib.getDocument({
+        data: new Uint8Array(data)
+    }).promise;
+
+    const paragraphs = [];
+
+    for (let i = 1; i <= pdf.numPages; i++) {
+
+        const page = await pdf.getPage(i);
+
+        const content = await page.getTextContent();
+
+        let line = "";
+
+        for (const item of content.items) {
+
+            if (!item.str) continue;
+
+            line += item.str;
+
+            if (item.hasEOL) {
+                if (line.trim()) {
+                    paragraphs.push(
+                        new docx.Paragraph({
+                            children: [new docx.TextRun(line.trim())]
+                        })
+                    );
+                }
+                line = "";
+            } else {
+                line += " ";
+            }
+        }
+
+        if (line.trim()) {
+            paragraphs.push(
+                new docx.Paragraph({
+                    children: [new docx.TextRun(line.trim())]
+                })
+            );
+        }
+
+        paragraphs.push(
+            new docx.Paragraph({
+                children: [new docx.TextRun("")]
+            })
+        );
+    }
+
+    if (!paragraphs.length) {
+        throw new Error("No readable text found in this PDF.");
+    }
+
+    const document = new docx.Document({
+        sections: [{
+            children: paragraphs
+        }]
+    });
+
+    const blob = await docx.Packer.toBlob(document);
+
+    downloadBlob(blob, "converted.docx");
+}
+
+// WORD TO PDF
+async function wordToPDF(file) {
+
+    const arrayBuffer = await file.arrayBuffer();
+
+    const result = await mammoth.extractRawText({
+        arrayBuffer: arrayBuffer
+    });
+
+    const text = result.value.trim();
+
+    if (!text) {
+        throw new Error("No readable text found in the Word file.");
+    }
+
+    const { jsPDF } = window.jspdf;
+
+    const pdf = new jsPDF();
+
+    const margin = 15;
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+
+    const lines = pdf.splitTextToSize(
+        text,
+        pageWidth - margin * 2
+    );
+
+    let y = margin;
+
+    for (const line of lines) {
+
+        if (y > pageHeight - margin) {
+            pdf.addPage();
+            y = margin;
+        }
+
+        pdf.text(line, margin, y);
+        y += 7;
+    }
+
+    downloadBlob(
+        pdf.output("blob"),
+        "converted.pdf"
+    );
 }
 
 </script>
