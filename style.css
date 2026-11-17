@@ -1,0 +1,54 @@
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f0f4f8;
+    margin: 0;
+}
+
+header {
+    background: #1769aa;
+    color: white;
+    text-align: center;
+    padding: 25px;
+}
+
+.container {
+    background: white;
+    width: 500px;
+    max-width: 85%;
+    margin: 50px auto;
+    padding: 30px;
+    text-align: center;
+    border-radius: 12px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+}
+
+.upload-box {
+    border: 2px dashed #1769aa;
+    padding: 30px;
+    border-radius: 10px;
+    margin: 25px 0;
+}
+
+select {
+    padding: 12px;
+    width: 80%;
+    border-radius: 6px;
+}
+
+button {
+    background: #1769aa;
+    color: white;
+    padding: 13px 30px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #0d4778;
+}
+
+#message {
+    color: green;
+}

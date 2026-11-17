@@ -4,119 +4,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Upload Website</title>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f0f2f5;
-            margin: 0;
-            padding: 40px;
-        }
-
-        .container {
-            width: 450px;
-            max-width: 90%;
-            margin: 50px auto;
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-
-        h1 {
-            color: #1976d2;
-        }
-
-        .upload-box {
-            border: 2px dashed #1976d2;
-            padding: 30px;
-            border-radius: 10px;
-            margin: 20px 0;
-        }
-
-        input {
-            margin: 15px 0;
-        }
-
-        button {
-            background: #1976d2;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #0d47a1;
-        }
-
-        #fileList {
-            text-align: left;
-            margin-top: 20px;
-        }
-
-        li {
-            margin: 10px 0;
-        }
-    </style>
+    <title>File Converter</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
+
+<header>
+    <h2>File Converter</h2>
+    <p>Convert your files easily and quickly</p>
+</header>
 
 <div class="container">
 
-    <h1>File Upload System</h1>
-
-    <p>Select a file from your computer</p>
+    <h1>Convert Your Files</h1>
+    <p>Upload a file and choose your desired format.</p>
 
     <div class="upload-box">
+        <h3>Upload Your File</h3>
 
-        <form>
-            <input type="file" id="fileInput" multiple>
-            <br><br>
+        <input type="file" id="fileInput">
 
-            <button type="button" onclick="uploadFile()">
-                Upload File
-            </button>
-        </form>
-
+        <p id="fileName">No file selected</p>
     </div>
 
-    <h3>Selected Files</h3>
+    <h3>Choose Conversion Format</h3>
 
-    <ul id="fileList"></ul>
+    <select id="format">
+        <option value="png">PNG</option>
+        <option value="jpg">JPG</option>
+        <option value="pdf">PDF</option>
+        <option value="txt">TXT</option>
+    </select>
+
+    <br><br>
+
+    <button onclick="convertFile()">Convert File</button>
+
+    <p id="message"></p>
 
 </div>
 
-<script>
-    function uploadFile() {
-
-        const input = document.getElementById("fileInput");
-        const fileList = document.getElementById("fileList");
-
-        if (input.files.length === 0) {
-            alert("Please select a file first!");
-            return;
-        }
-
-        for (let file of input.files) {
-
-            let li = document.createElement("li");
-
-            li.textContent = file.name +
-                " (" + (file.size / 1024).toFixed(2) + " KB)";
-
-            fileList.appendChild(li);
-        }
-
-        alert("Files selected successfully!");
-
-        input.value = "";
-    }
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
