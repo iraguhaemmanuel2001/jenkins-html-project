@@ -2,49 +2,240 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Converter</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Online File Converter</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f0f4f8;
+}
+
+header {
+    background: #1769aa;
+    color: white;
+    text-align: center;
+    padding: 25px;
+}
+
+header h1 {
+    margin: 0;
+}
+
+.container {
+    width: 500px;
+    max-width: 90%;
+    margin: 50px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.upload-box {
+    border: 2px dashed #1769aa;
+    border-radius: 10px;
+    padding: 35px 15px;
+    margin: 25px 0;
+}
+
+.upload-box h3 {
+    color: #1769aa;
+}
+
+input[type="file"] {
+    max-width: 100%;
+    margin: 15px 0;
+}
+
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-top: 10px;
+}
+
+button {
+    width: 100%;
+    background: #1769aa;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 6px;
+    margin-top: 20px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background: #0d4778;
+}
+
+#message {
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+footer {
+    text-align: center;
+    color: #777;
+    margin-top: 30px;
+    font-size: 13px;
+}
+</style>
 </head>
+
 <body>
 
 <header>
-    <h2>File Converter</h2>
-    <p>Convert your files easily and quickly</p>
+    <h1>File Converter</h1>
+    <p>Convert your files quickly and easily</p>
 </header>
 
 <div class="container">
 
-    <h1>Convert Your Files</h1>
-    <p>Upload a file and choose your desired format.</p>
+    <h2>Convert Your File</h2>
+
+    <p>Select a file from your computer</p>
 
     <div class="upload-box">
-        <h3>Upload Your File</h3>
 
-        <input type="file" id="fileInput">
+        <h3>Upload File</h3>
+
+        <input type="file" id="fileInput"
+        accept=".jpg,.jpeg,.png,image/jpeg,image/png">
 
         <p id="fileName">No file selected</p>
+
     </div>
 
-    <h3>Choose Conversion Format</h3>
+    <label><b>Convert To:</b></label>
 
     <select id="format">
         <option value="png">PNG</option>
         <option value="jpg">JPG</option>
-        <option value="pdf">PDF</option>
-        <option value="txt">TXT</option>
     </select>
 
-    <br><br>
-
-    <button onclick="convertFile()">Convert File</button>
+    <button onclick="convertFile()">
+        Convert File
+    </button>
 
     <p id="message"></p>
 
 </div>
 
-<script src="script.js"></script>
+<footer>
+    <p>Online File Converter | Simple and Easy</p>
+</footer>
+
+<script>
+
+const fileInput = document.getElementById("fileInput");
+
+fileInput.addEventListener("change", function() {
+
+    document.getElementById("fileName").textContent =
+        this.files.length
+        ? this.files[0].name
+        : "No file selected";
+
+});
+
+function convertFile() {
+
+    const file = fileInput.files[0];
+    const format = document.getElementById("format").value;
+    const message = document.getElementById("message");
+
+    if (!file) {
+        alert("Please select a file first!");
+        return;
+    }
+
+    if (!["image/jpeg", "image/png"].includes(file.type)) {
+        message.style.color = "red";
+        message.textContent =
+            "Please upload a JPG or PNG image.";
+        return;
+    }
+
+    const image = new Image();
+    const imageURL = URL.createObjectURL(file);
+
+    image.onload = function() {
+
+        const canvas = document.createElement("canvas");
+
+        canvas.width = image.width;
+        canvas.height = image.height;
+
+        const context = canvas.getContext("2d");
+
+        // Add white background when converting to JPG
+        if (format === "jpg") {
+            context.fillStyle = "white";
+            context.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        context.drawImage(image, 0, 0);
+
+        const mimeType =
+            format === "jpg" ? "image/jpeg" : "image/png";
+
+        canvas.toBlob(function(blob) {
+
+            if (!blob) {
+                message.style.color = "red";
+                message.textContent = "Conversion failed!";
+                URL.revokeObjectURL(imageURL);
+                return;
+            }
+
+            const downloadURL = URL.createObjectURL(blob);
+
+            const link = document.createElement("a");
+
+            link.href = downloadURL;
+            link.download = "converted." + format;
+
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+
+            URL.revokeObjectURL(downloadURL);
+            URL.revokeObjectURL(imageURL);
+
+            message.style.color = "green";
+            message.textContent =
+                "Conversion successful! Your file has been downloaded.";
+
+        }, mimeType, 0.92);
+
+    };
+
+    image.onerror = function() {
+
+        message.style.color = "red";
+        message.textContent = "Unable to read this image.";
+
+        URL.revokeObjectURL(imageURL);
+
+    };
+
+    image.src = imageURL;
+
+}
+
+</script>
 
 </body>
 </html>
