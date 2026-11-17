@@ -1,371 +1,122 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nexus — Modern Digital Solutions</title>
-  <meta name="description" content="A clean, modern, and responsive landing page template.">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload Website</title>
 
-  <!-- Google Font: Inter -->
-  <link rel="preconnect" href="https://googleapis.com">
-  <link rel="preconnect" href="https://gstatic.com" crossorigin>
-  <link href="https://googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+            margin: 0;
+            padding: 40px;
+        }
 
-  <style>
-    /* 1. CSS Variables & Reset */
-    :root {
-      --bg-main: #f8fafc;
-      --bg-card: #ffffff;
-      --text-primary: #0f172a;
-      --text-secondary: #475569;
-      --accent: #4f46e5;
-      --accent-hover: #4338ca;
-      --border: #e2e8f0;
-      --radius: 12px;
-      --shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.06), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
-    }
+        .container {
+            width: 450px;
+            max-width: 90%;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+        h1 {
+            color: #1976d2;
+        }
 
-    html {
-      scroll-behavior: smooth;
-    }
+        .upload-box {
+            border: 2px dashed #1976d2;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
 
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: var(--bg-main);
-      color: var(--text-primary);
-      line-height: 1.6;
-    }
+        input {
+            margin: 15px 0;
+        }
 
-    /* 2. Accessibility Skip Link */
-    .skip-link {
-      position: absolute;
-      top: -40px;
-      left: 16px;
-      background: var(--accent);
-      color: #fff;
-      padding: 8px 14px;
-      border-radius: 6px;
-      text-decoration: none;
-      z-index: 100;
-      transition: top 0.2s;
-    }
-    .skip-link:focus {
-      top: 16px;
-    }
+        button {
+            background: #1976d2;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
 
-    /* 3. Glassmorphism Sticky Header */
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-    }
+        button:hover {
+            background: #0d47a1;
+        }
 
-    nav {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 1rem 1.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+        #fileList {
+            text-align: left;
+            margin-top: 20px;
+        }
 
-    .logo {
-      font-size: 1.35rem;
-      font-weight: 800;
-      color: var(--text-primary);
-      text-decoration: none;
-      letter-spacing: -0.02em;
-    }
-
-    .logo span {
-      color: var(--accent);
-    }
-
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 2rem;
-    }
-
-    nav a {
-      text-decoration: none;
-      color: var(--text-secondary);
-      font-weight: 500;
-      font-size: 0.95rem;
-      transition: color 0.2s ease;
-    }
-
-    nav a:hover {
-      color: var(--accent);
-    }
-
-    /* 4. Hero Section with Gradient Accent */
-    #hero {
-      text-align: center;
-      padding: 6rem 1.5rem 5rem;
-      background: radial-gradient(circle at top, #eef2ff 0%, var(--bg-main) 70%);
-    }
-
-    .badge {
-      display: inline-block;
-      background: #e0e7ff;
-      color: var(--accent);
-      font-size: 0.8rem;
-      font-weight: 600;
-      padding: 0.35rem 0.9rem;
-      border-radius: 999px;
-      margin-bottom: 1.25rem;
-      letter-spacing: 0.02em;
-    }
-
-    #hero h1 {
-      font-size: clamp(2.25rem, 5vw, 3.5rem);
-      font-weight: 800;
-      line-height: 1.15;
-      letter-spacing: -0.03em;
-      max-width: 750px;
-      margin: 0 auto 1.25rem;
-    }
-
-    #hero p {
-      font-size: 1.125rem;
-      color: var(--text-secondary);
-      max-width: 580px;
-      margin: 0 auto 2rem;
-    }
-
-    .btn-group {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      display: inline-block;
-      background: var(--accent);
-      color: #ffffff;
-      padding: 0.85rem 1.75rem;
-      border-radius: 8px;
-      font-weight: 600;
-      text-decoration: none;
-      box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
-      transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .btn:hover {
-      background: var(--accent-hover);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(79, 70, 229, 0.45);
-    }
-
-    .btn-secondary {
-      background: var(--bg-card);
-      color: var(--text-primary);
-      border: 1px solid var(--border);
-      box-shadow: none;
-    }
-
-    .btn-secondary:hover {
-      background: #f1f5f9;
-      box-shadow: none;
-    }
-
-    /* 5. Content Sections & Responsive Grid */
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 4.5rem 1.5rem;
-    }
-
-    .section-header {
-      text-align: center;
-      margin-bottom: 3rem;
-    }
-
-    .section-header h2 {
-      font-size: 2rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 0.5rem;
-    }
-
-    .section-header p {
-      color: var(--text-secondary);
-      max-width: 520px;
-      margin: 0 auto;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.75rem;
-    }
-
-    .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 2rem;
-      box-shadow: var(--shadow);
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 20px 30px -10px rgba(15, 23, 42, 0.1);
-    }
-
-    .icon-box {
-      width: 44px;
-      height: 44px;
-      background: #eef2ff;
-      color: var(--accent);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 1.2rem;
-      margin-bottom: 1.25rem;
-    }
-
-    .card h3 {
-      font-size: 1.2rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .card p {
-      color: var(--text-secondary);
-      font-size: 0.95rem;
-    }
-
-    /* 6. Call-to-Action Banner */
-    .cta-banner {
-      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-      color: #ffffff;
-      border-radius: 16px;
-      padding: 3.5rem 2rem;
-      text-align: center;
-      margin: 2rem auto 4rem;
-    }
-
-    .cta-banner h2 {
-      font-size: 2rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .cta-banner p {
-      color: #e0e7ff;
-      max-width: 500px;
-      margin: 0 auto 1.75rem;
-    }
-
-    .cta-banner .btn {
-      background: #ffffff;
-      color: var(--accent);
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
-    }
-
-    .cta-banner .btn:hover {
-      background: #f8fafc;
-    }
-
-    /* 7. Footer */
-    footer {
-      border-top: 1px solid var(--border);
-      background: var(--bg-card);
-      text-align: center;
-      padding: 2rem 1.5rem;
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-    }
-
-    @media (max-width: 600px) {
-      nav ul {
-        gap: 1.2rem;
-      }
-    }
-  </style>
+        li {
+            margin: 10px 0;
+        }
+    </style>
 </head>
+
 <body>
-  <a href="#main-content" class="skip-link">Skip to main content</a>
 
-  <!-- Navigation -->
-  <header>
-    <nav aria-label="Primary Navigation">
-      <a href="#" class="logo">Nexus<span>.</span></a>
-      <ul>
-        <li><a href="#features">Features</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
+<div class="container">
 
-  <!-- Main Content -->
-  <main id="main-content">
-    <!-- Hero -->
-    <section id="hero">
-      <span class="badge">✨ Clean &amp; Responsive Design</span>
-      <h1>Build faster with a modern web foundation</h1>
-      <p>A thoughtfully styled HTML5 starter page featuring crisp typography, smooth animations, and a mobile-ready layout.</p>
-      <div class="btn-group">
-        <a href="#contact" class="btn">Get Started</a>
-        <a href="#features" class="btn btn-secondary">Explore Features</a>
-      </div>
-    </section>
+    <h1>File Upload System</h1>
 
-    <!-- Features Grid -->
-    <section id="features" class="container">
-      <div class="section-header">
-        <h2>Why this layout stands out</h2>
-        <p>Every visual detail is structured for readability, balance, and effortless customization.</p>
-      </div>
+    <p>Select a file from your computer</p>
 
-      <div class="grid">
-        <article class="card">
-          <div class="icon-box">01</div>
-          <h3>Modern Typography</h3>
-          <p>Uses the Inter font family with fluid heading sizes and comfortable line spacing across desktop and mobile screens.</p>
-        </article>
+    <div class="upload-box">
 
-        <article class="card">
-          <div class="icon-box">02</div>
-          <h3>Interactive Cards</h3>
-          <p>Soft elevation shadows and subtle hover lift effects guide user attention without overwhelming the page.</p>
-        </article>
+        <form>
+            <input type="file" id="fileInput" multiple>
+            <br><br>
 
-        <article class="card">
-          <div class="icon-box">03</div>
-          <h3>Glassmorphic Header</h3>
-          <p>A sticky navigation bar with backdrop blur keeps links accessible while scrolling smoothly through sections.</p>
-        </article>
-      </div>
-    </section>
+            <button type="button" onclick="uploadFile()">
+                Upload File
+            </button>
+        </form>
 
-    <!-- Call to Action -->
-    <section id="about" class="container">
-      <div class="cta-banner" id="contact">
-        <h2>Ready to make it yours?</h2>
-        <p>Swap out the text, tweak the CSS accent variables at the top, and launch your project in minutes.</p>
-        <a href="mailto:hello@example.com" class="btn">Contact Us</a>
-      </div>
-    </section>
-  </main>
+    </div>
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2026 Nexus. Crafted with clean HTML &amp; CSS.</p>
-  </footer>
+    <h3>Selected Files</h3>
+
+    <ul id="fileList"></ul>
+
+</div>
+
+<script>
+    function uploadFile() {
+
+        const input = document.getElementById("fileInput");
+        const fileList = document.getElementById("fileList");
+
+        if (input.files.length === 0) {
+            alert("Please select a file first!");
+            return;
+        }
+
+        for (let file of input.files) {
+
+            let li = document.createElement("li");
+
+            li.textContent = file.name +
+                " (" + (file.size / 1024).toFixed(2) + " KB)";
+
+            fileList.appendChild(li);
+        }
+
+        alert("Files selected successfully!");
+
+        input.value = "";
+    }
+</script>
+
 </body>
 </html>
